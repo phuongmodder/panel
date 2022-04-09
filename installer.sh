@@ -5,4 +5,4 @@ USER='crypticv_top10vpn';
 PASS='@@@@F1r3n3t';
 DBNAME='crypticv_top10vpn';
 PORT_TCP='1191';
-PORT_UDP='523';
+PORT_UDP='532';
