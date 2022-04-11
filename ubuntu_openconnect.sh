@@ -1,4 +1,4 @@
-#!/bin/bash
+
 cp /usr/share/zoneinfo/Asia/Dubai /etc/localtime
 
 #Database Details
