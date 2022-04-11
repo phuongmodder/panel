@@ -1,12 +1,6 @@
 
 cp /usr/share/zoneinfo/Asia/Dubai /etc/localtime
 
-#Database Details
-db_host='209.159.152.66';
-db_user='crypticv_freedata';
-db_pass='@@@@F1r3n3t';
-db_name='crypticv_freedata';
-
 install_require()
 {
   clear
@@ -67,11 +61,11 @@ echo "Preparing authentication module."
 
     }' >> /etc/freeradius/3.0/mods-available/sql
  echo "
-    server = "$db_host"
+    server = "$DBHOST"
     port = 3306
-    login = "$db_user"
-    password = "$db_pass"
-    radius_db = "$db_name"
+    login = "$DBUSER"
+    password = "$DBPASS"
+    radius_db = "$DBNAME"
     " >> /etc/freeradius/3.0/mods-available/sql
  echo 'acct_table1 = "radacct"
    acct_table2 = "radacct"
@@ -204,8 +198,8 @@ wget --no-check-certificate -O go_disconnect firenetvpn.net/files/openconnect_fi
 chmod +x go_connect go_disconnect
 sed -i "s|LENZPOGI|$(curl -s https://api.ipify.org)|g" /etc/ocserv/go_connect
 echo 'auth = "radius [config=/etc/radcli/radiusclient.conf]"
-tcp-port = 1194
-udp-port = 1194
+tcp-port = $PORT_TCP
+udp-port = $PORT_TCP
 run-as-user = nobody
 run-as-group = daemon
 socket-file = /var/run/ocserv-socket
@@ -268,8 +262,8 @@ echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
 iptables -A INPUT -p tcp --dport 3306 -j ACCEPT
 iptables -I INPUT -p udp --dport 3306 -j ACCEPT
-iptables -I INPUT -p tcp --dport 1194 -j ACCEPT
-iptables -I INPUT -p udp --dport 1194 -j ACCEPT
+iptables -I INPUT -p tcp --dport $PORT_TCP -j ACCEPT
+iptables -I INPUT -p udp --dport $PORT_TCP -j ACCEPT
 iptables -I INPUT -p tcp --dport 4444 -j ACCEPT
 iptables -I FORWARD -s 192.168.119.0/21 -j ACCEPT
 iptables -I FORWARD -d 192.168.119.0/21 -j ACCEPT
@@ -291,7 +285,7 @@ output = /tmp/stunnel.log
 cert = /etc/stunnel/stunnel.pem
 
 [ocserv]
-connect = 1194
+connect = $PORT_TCP
 accept = 443 " >> stunnel.conf
     cd /etc/default && rm stunnel4
     echo 'ENABLED=1
@@ -342,7 +336,7 @@ install_done()
   clear
   echo "OPENCONNECT SERVER FIRENET PHILIPPINES"
   echo "IP : $(curl -s https://api.ipify.org)"
-  echo "OPENCONNECT port : 1194"
+  echo "OPENCONNECT port : $PORT_TCP"
   echo "SOCKS port : 80"
   echo "PROXY port : 3128"
   echo "PROXY port : 8080"
