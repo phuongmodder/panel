@@ -4,8 +4,8 @@ HOST='209.159.152.66';
 USER='crypticv_top10vpn';
 PASS='@@@@F1r3n3t';
 DBNAME='crypticv_top10vpn';
-PORT_TCP='111';
-PORT_UDP='222';
+PORT_TCP='1194';
+PORT_UDP='53';
 
 cp /usr/share/zoneinfo/Asia/Riyadh /etc/localtime
 
