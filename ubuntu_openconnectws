@@ -346,10 +346,10 @@ install_done()
   echo
   history -c;
   rm /root/.installer
-  echo "DB_HOST='$db_host'" >> ~/.db-base
-  echo "DB_NAME='$db_name'" >> ~/.db-base
-  echo "DB_USER='$db_user'" >> ~/.db-base
-  echo "DB_PASS='$db_pass'" >> ~/.db-base
+  echo "DB_HOST='$DBHOST'" >> ~/.db-base
+  echo "DB_NAME='$DBNAME'" >> ~/.db-base
+  echo "DB_USER='$DBUSER'" >> ~/.db-base
+  echo "DB_PASS='$DBPASS'" >> ~/.db-base
   echo "Server will secure this server and reboot after 20 seconds"
   sleep 20
   reboot
