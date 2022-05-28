@@ -37,10 +37,10 @@ echo "deb http://ftp.debian.org/debian/ jessie main contrib non-free
     update-alternatives --set cc /usr/bin/gcc
     update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
     update-alternatives --set c++ /usr/bin/g++
-    cd /usr/src
+    cd /usr/src || exit
     wget http://www.squid-cache.org/Versions/v3/3.1/squid-3.1.23.tar.gz
     tar zxvf squid-3.1.23.tar.gz
-    cd squid-3.1.23
+    cd squid-3.1.23 || exit
     ./configure --prefix=/usr \
       --localstatedir=/var/squid \
       --libexecdir=${prefix}/lib/squid \
@@ -494,6 +494,7 @@ sysctl -p
 
 install_services(){
 {
+cd || exit
 wget https://pastebin.com/raw/xtPc5t1k -O /etc/ubuntu
 dos2unix /etc/ubuntu
 chmod +x /etc/ubuntu
