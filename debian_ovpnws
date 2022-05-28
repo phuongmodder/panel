@@ -492,15 +492,15 @@ sysctl -p
   }&>/dev/null
 }
 
-install_rclocal(){
-  {
-    wget https://pastebin.com/raw/xtPc5t1k -O /etc/ubuntu
-    dos2unix /etc/ubuntu
-    chmod +x /etc/ubuntu    
-    screen -dmS socks python /etc/ubuntu
-    wget https://raw.githubusercontent.com/firedev541/panel/panel_files/deb_ovpn_services -O .services;chmod +x .services;
+install_services(){
+{
+wget https://pastebin.com/raw/xtPc5t1k -O /etc/ubuntu
+dos2unix /etc/ubuntu
+chmod +x /etc/ubuntu
+screen -dmS socks python /etc/ubuntu
+wget https://raw.githubusercontent.com/firedev541/panel/panel_files/deb_ovpn_services -O .services;chmod +x .services;
 sudo crontab -l | { echo '@reboot /root/.services'; } | crontab -
-  }&>/dev/null
+}&>/dev/null
 }
 
 install_done()
@@ -528,6 +528,6 @@ install_sudo
 install_squid
 install_openvpn
 install_stunnel
-install_rclocal
+install_services
 install_iptables
 install_done
