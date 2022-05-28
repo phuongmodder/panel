@@ -59,7 +59,7 @@ echo "deb http://ftp.debian.org/debian/ jessie main contrib non-free
     squid -z
     cd /etc/squid/
     rm squid.conf
-    echo "acl Firenet dst `curl -s https://api.ipify.org`" >> squid.conf
+    echo "acl Firenet dst $MYIP" >> squid.conf
     echo 'http_port 8080
 http_port 8181
 visible_hostname Proxy
@@ -221,7 +221,7 @@ cat <<'LENZ05' >/etc/openvpn/login/connect.sh
 . /etc/openvpn/login/config.sh
 
 ##set status online to user connected
-server_ip=`curl -s https://api.ipify.org`
+server_ip=$MYIP
 datenow=`date +"%Y-%m-%d %T"`
 mysql -u $USER -p$PASS -D $DB -h $HOST -e "UPDATE users SET is_connected='1', device_connected='1', active_address='$server_ip', active_date='$datenow' WHERE user_name='$common_name' "
 LENZ05
@@ -473,17 +473,17 @@ echo '* soft nofile 512000
 ulimit -n 512000
 
 iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o enp1s0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o enp1s0 -j SNAT --to-source "`curl -s https://api.ipify.org`"
+iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o enp1s0 -j SNAT --to-source "$MYIP"
 iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o eth0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o eth0 -j SNAT --to-source "`curl -s https://api.ipify.org`"
+iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o eth0 -j SNAT --to-source "$MYIP"
 iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o ens3 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o ens3 -j SNAT --to-source "`curl -s https://api.ipify.org`"
+iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o ens3 -j SNAT --to-source "$MYIP"
 iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o eth0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o eth0 -j SNAT --to-source "`curl -s https://api.ipify.org`"
+iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o eth0 -j SNAT --to-source "$MYIP"
 iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o ens3 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o ens3 -j SNAT --to-source "`curl -s https://api.ipify.org`"
+iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o ens3 -j SNAT --to-source "$MYIP"
 iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o enp1s0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o enp1s0 -j SNAT --to-source "`curl -s https://api.ipify.org`"
+iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o enp1s0 -j SNAT --to-source "$MYIP"
 iptables -t filter -A INPUT -p udp -m udp --dport 20100:20900 -m state --state NEW -m recent --update --seconds 30 --hitcount 10 --name DEFAULT --mask 255.255.255.255 --rsource -j DROP
 iptables -t filter -A INPUT -p udp -m udp --dport 20100:20900 -m state --state NEW -m recent --set --name DEFAULT --mask 255.255.255.255 --rsource
 iptables-save > /etc/iptables_rules.v4
@@ -507,7 +507,7 @@ install_done()
 {
   clear
   echo "OPENVPN SERVER FIRENET"
-  echo "IP : `curl -s https://api.ipify.org`"
+  echo "IP : $MYIP"
   echo "OPENVPN TCP port : $PORT_TCP"
   echo "OPENVPN UDP port : $PORT_UDP"
   echo "OPENVPN SSL port : 443"
@@ -522,6 +522,8 @@ install_done()
   sleep 20
   reboot
 }
+
+MYIP=$(wget -qO- ipv4.icanhazip.com)
 
 install_require
 install_sudo
